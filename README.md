@@ -15,10 +15,10 @@ a) Passing log context via ThreadLocals is implicit. It creates errors when you 
 I know about solutions (CustomThreadPools, or CoroutineDispatcher), but it's ugly.  
 b) Implicit logger creation via static methods. 
 4) Overcomplicated  
-a) Logger inheritance, JNDI calls, and many others "features". Most of server side usages, just would like 
-write Strings to stdout, and store them to ELK,Splunk,etc.
+a) Logger inheritance, JNDI calls, and many others "features". Most server side usages, just would like 
+write Strings to stdout, and store them to ELK, Splunk, etc.
 
-This project is attempt to create new brave logger for kotlin-jvm without these "mistakes"
+This project is attempt to create new logger for kotlin-jvm without these "mistakes"
 
 ### Features
 1) Code configuration. Use kotlin-dsl for logger configuration. You could override almost anything. 
