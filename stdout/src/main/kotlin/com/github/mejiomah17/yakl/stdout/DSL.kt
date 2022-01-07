@@ -17,6 +17,6 @@ public fun LogDslScope.stdout(name: String, block: StdOutLogAppenderDslScope.() 
 }
 
 public class StdOutLogAppenderDslScope(public val name: String) {
-    public var formatter: LogFormatter = LogFormatter.simpleFormatter
+    public var formatter: LogFormatter = LogFormatter.defaultFormatter
     public var filter: LogFilter = LogFilter.allowAll
 }

@@ -5,6 +5,7 @@ import com.github.mejiomah17.yakl.core.LogFilter
 import com.github.mejiomah17.yakl.core.LogMessage
 import com.github.mejiomah17.yakl.core.MainLogger
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -15,7 +16,7 @@ public class AsyncMainLogger(
     public val executorService: ExecutorService,
     appenders: Collection<LogAppender>
 ) : MainLogger {
-    override val appenders: ConcurrentHashMap<String, LogAppender> =
+    override val appenders: ConcurrentMap<String, LogAppender> =
         appenders.associateBy { it.name }.toMap(ConcurrentHashMap())
 
     /**

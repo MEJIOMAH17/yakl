@@ -16,8 +16,7 @@ public class StdOutLogAppender(
             formatter.format(this, logMessage)
             appendLine()
         }
-        out.writeBytes("$x".toByteArray())
+        out.writeBytes(x.toByteArray())
         out.flush()
-        // println(formatter.format(logMessage))
     }
 }

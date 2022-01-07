@@ -1,13 +1,23 @@
 package com.github.mejiomah17.yakl.core
 
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+
 public fun interface LogFormatter {
     public fun format(builder: StringBuilder, message: LogMessage)
 
     public companion object {
-        public val simpleFormatter: LogFormatter = LogFormatter { builder, message ->
-            builder.append(
-                "LogMessage(throwable=${message.throwable}, level=${message.level}, loggerName='${message.loggerName}', messageContext=${message.messageContext}, content=${message.content})"
-            )
+        private val defaultDateFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.ms").withZone(ZoneId.from(ZoneOffset.UTC))
+        public val defaultFormatter: LogFormatter = LogFormatter { builder, message ->
+            val time = defaultDateFormatter.format(message.time)
+            val context = if (message.messageContext.isNotEmpty()) {
+                "${message.messageContext} "
+            } else {
+                ""
+            }
+            builder.append("$time [${message.level}] ${context}${message.loggerName}:${message.content}")
         }
     }
 }

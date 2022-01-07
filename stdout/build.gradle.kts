@@ -1,6 +1,6 @@
-plugins{
+plugins {
     `java-library`
-    id( "me.champeau.jmh") version "0.6.6"
+    id("me.champeau.jmh") version "0.6.6"
 }
 kotlin {
     explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Strict
@@ -17,5 +17,4 @@ jmh {
     fork.set(1)
     benchmarkMode.set(listOf("thrpt"))
     timeUnit.set("ms")
-
 }

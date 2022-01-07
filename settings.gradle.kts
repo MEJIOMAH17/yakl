@@ -1,2 +1,2 @@
 rootProject.name = "yakl"
-include("api", "core", "stdout")
+include("api", "core", "stdout", "slf4j")
