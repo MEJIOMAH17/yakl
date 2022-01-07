@@ -1,6 +1,6 @@
-#YAKL
+# YAKL
 Yet Another Kotlin Logger.
-###Motivation
+### Motivation
 Current jvm loggers have some disadvantages. They have  
 1) Magic configuration.  
 a) Implicit implementation selector via classpath scan. If you have multiple implementations, they are blow up.
@@ -20,21 +20,21 @@ write Strings to stdout, and store them to ELK,Splunk,etc.
 
 This project is attempt to create new brave logger for kotlin-jvm without these "mistakes"
 
-###Features
+### Features
 1) Code configuration. Use kotlin-dsl for logger configuration. You could override almost anything. 
 Yep, you could do it in runtime (if you need it).
 2) Simple api. Look into ```api``` module and read three simple classes.
 3) Explicit usage. You pass everything explicitly. If you need implicit usage, you could easy wrap Logger and 
 store context in ThreadLocals, CoroutineContexts or your custom storage.
 
-###Modules
+### Modules
 
 1) api - use this module if you write a library which should log something.
 2) stdout - use this module in your application for log something to stdout.
 3) core - use this module if you would like extend standard realization of YAKL
 4) slf4j - adapter for slf4j.
 
-###Current Status
+### Current Status
 YAKL in alpha testing. It does not have guarantees for API and support. 
 
 Project will change status to beta testing when it receives
