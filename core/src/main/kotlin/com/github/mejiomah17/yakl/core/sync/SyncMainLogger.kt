@@ -13,12 +13,23 @@ public class SyncMainLogger(
     override val appenders: ConcurrentMap<String, LogAppender> =
         appenders.associateBy { it.name }.toMap(ConcurrentHashMap())
 
+    @Volatile
+    private var closing = false
+
     public override fun log(logMessage: LogMessage) {
+        if (closing) {
+            throw java.lang.IllegalStateException("can't log message. Logger is closed")
+        }
         appenders.forEach { (_, appender) ->
             if (appender.filter.isLogEnabled(logMessage) == LogFilter.Result.ALLOW) {
                 appender.append(logMessage)
             }
         }
+    }
+
+    override fun close() {
+        closing = true
+        super.close()
     }
 
     public companion object : (Collection<LogAppender>) -> SyncMainLogger {

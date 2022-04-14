@@ -36,8 +36,9 @@ This project is attempt to create new logger for kotlin-jvm without these "mista
 
 1) api - use this module if you write a library which should log something.
 2) stdout - use this module in your application for log something to stdout.
-3) core - use this module if you would like extend standard realization of YAKL
-4) slf4j - adapter for slf4j.
+3) html - use this module in your application for log something to html files.
+4) core - use this module if you would like extend standard realization of YAKL
+5) slf4j - adapter for slf4j.
 
 ### Current Status
 

@@ -19,10 +19,16 @@ public class AsyncMainLogger(
     override val appenders: ConcurrentMap<String, LogAppender> =
         appenders.associateBy { it.name }.toMap(ConcurrentHashMap())
 
+    @Volatile
+    private var closing = false
+
     /**
      * submit log message to different threads for [appenders]
      */
     public override fun log(logMessage: LogMessage) {
+        if (closing) {
+            throw java.lang.IllegalStateException("can't log message. Logger is closed")
+        }
         appenders.forEach { _, appender ->
             executorService.submit {
                 if (appender.filter.isLogEnabled(logMessage) == LogFilter.Result.ALLOW) {
@@ -30,6 +36,15 @@ public class AsyncMainLogger(
                 }
             }
         }
+    }
+
+    override fun close() {
+        closing = true
+        executorService.shutdown()
+        while (!executorService.isShutdown) {
+            Thread.sleep(100)
+        }
+        super.close()
     }
 
     public companion object : (Collection<LogAppender>) -> AsyncMainLogger {

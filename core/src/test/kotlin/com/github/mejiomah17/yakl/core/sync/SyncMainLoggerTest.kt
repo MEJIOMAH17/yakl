@@ -5,6 +5,7 @@ import com.github.mejiomah17.yakl.core.LogMessage
 import com.github.mejiomah17.yakl.core.TestLogAppender
 import com.github.mejiomah17.yakl.core.invoke
 import com.github.mejiomah17.yakl.core.sync.SyncMainLogger
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
@@ -30,7 +31,7 @@ class SyncMainLoggerTest {
         val first = TestLogAppender()
         val filterCalled = AtomicBoolean(false)
         val second = TestLogAppender(
-            filter = LogFilter {
+            filter = {
                 filterCalled.set(true)
                 LogFilter.Result.DENY
             }
@@ -43,5 +44,14 @@ class SyncMainLoggerTest {
         first.logs.firstOrNull() shouldBeSameInstanceAs logMessage
         filterCalled.get() shouldBe true
         second.logs.shouldBeEmpty()
+    }
+
+    @Test
+    fun `can't log to closedLogger`() {
+        val logger = SyncMainLogger(emptyList())
+        logger.close()
+        shouldThrow<java.lang.IllegalStateException> {
+            logger.log(LogMessage())
+        }.message shouldBe "can't log message. Logger is closed"
     }
 }
