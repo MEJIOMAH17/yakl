@@ -7,6 +7,7 @@ import com.github.mejiomah17.yakl.core.MainLogger
 import org.slf4j.Logger
 import org.slf4j.MDC
 import org.slf4j.Marker
+import org.slf4j.helpers.MessageFormatter
 import java.time.Instant
 
 internal class Slf4jLogger(
@@ -591,7 +592,7 @@ internal class Slf4jLogger(
             time = Instant.now(),
             messageContext = createContextMap(marker),
         ) {
-            format?.format(*args) ?: ""
+            MessageFormatter.arrayFormat(format, args).message
         }
     }
 
@@ -600,7 +601,7 @@ internal class Slf4jLogger(
             MDC.getCopyOfContextMap() ?: emptyMap()
         } else {
             val map = HashMap<String, Any>()
-            map.putAll(MDC.getCopyOfContextMap())
+            map.putAll(MDC.getCopyOfContextMap() ?: emptyMap())
             val markerList = mutableListOf<String>()
             markerList.putMarkerRecursive(marker)
             map["sl4jMarkers"] = markerList

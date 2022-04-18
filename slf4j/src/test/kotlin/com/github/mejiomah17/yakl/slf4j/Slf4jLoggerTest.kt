@@ -250,7 +250,7 @@ class Slf4jLoggerTest {
             LogLevel.ERROR -> Slf4jLogger::error
             LogLevel.FATAL -> TODO()
         }
-        log.method("test %s", "3")
+        log.method("test {}", "3")
         val slot = slot<() -> Any>()
         verify(exactly = 1) {
             yaklMock.log(
@@ -282,7 +282,7 @@ class Slf4jLoggerTest {
             LogLevel.ERROR -> Slf4jLogger::error
             LogLevel.FATAL -> TODO()
         }
-        log.method("test %s %s", "3", "4")
+        log.method("test {} {}", "3", "4")
         val slot = slot<() -> Any>()
         verify(exactly = 1) {
             yaklMock.log(
@@ -314,7 +314,7 @@ class Slf4jLoggerTest {
             LogLevel.ERROR -> Slf4jLogger::error
             LogLevel.FATAL -> TODO()
         }
-        log.method("test %s %s", arrayOf("3", "4"))
+        log.method("test {} {}", arrayOf("3", "4"))
         val slot = slot<() -> Any>()
         verify(exactly = 1) {
             yaklMock.log(
@@ -346,7 +346,7 @@ class Slf4jLoggerTest {
             LogLevel.ERROR -> Slf4jLogger::error
             LogLevel.FATAL -> TODO()
         }
-        log.method(MarkerFactory.getMarker("hey"), "test %s", "3")
+        log.method(MarkerFactory.getMarker("hey"), "test {}", "3")
         val slot = slot<() -> Any>()
         verify(exactly = 1) {
             yaklMock.log(
@@ -379,7 +379,7 @@ class Slf4jLoggerTest {
             LogLevel.ERROR -> Slf4jLogger::error
             LogLevel.FATAL -> TODO()
         }
-        log.method(MarkerFactory.getMarker("hey"), "test %s %s", "3", "4")
+        log.method(MarkerFactory.getMarker("hey"), "test {} {}", "3", "4")
         val slot = slot<() -> Any>()
         verify(exactly = 1) {
             yaklMock.log(
@@ -412,7 +412,7 @@ class Slf4jLoggerTest {
             LogLevel.ERROR -> Slf4jLogger::error
             LogLevel.FATAL -> TODO()
         }
-        log.method(MarkerFactory.getMarker("hey"), "test %s %s", arrayOf("3", "4"))
+        log.method(MarkerFactory.getMarker("hey"), "test {} {}", arrayOf("3", "4"))
         val slot = slot<() -> Any>()
         verify(exactly = 1) {
             yaklMock.log(

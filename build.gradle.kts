@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.mejiomah17.yakl"
-version = "0.1.2"
+version = "0.1.3"
 
 allprojects {
     repositories {

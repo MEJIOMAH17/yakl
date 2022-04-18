@@ -7,8 +7,15 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.IdentityHashMap
+import java.util.concurrent.atomic.AtomicInteger
 
-public fun LogDslScope.html(name: String, block: HtmlRollingFileAppenderDslScope.() -> Unit = {}) {
+private val counters = IdentityHashMap<LogDslScope, AtomicInteger>()
+
+public fun LogDslScope.html(
+    name: String = "sdtout-${counters.computeIfAbsent(this) { AtomicInteger() }.incrementAndGet()}",
+    block: HtmlRollingFileAppenderDslScope.() -> Unit = {}
+) {
     val scope = HtmlRollingFileAppenderDslScope(name)
     scope.block()
     appenders.add(
