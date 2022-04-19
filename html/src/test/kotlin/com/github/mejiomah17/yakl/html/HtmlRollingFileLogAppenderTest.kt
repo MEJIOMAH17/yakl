@@ -18,7 +18,6 @@ class HtmlRollingFileLogAppenderTest {
             logging {
                 html("html") {
                     fileCreator = { file }
-
                 }
             }.use {
                 val logger = it.createLogger("test")
@@ -73,7 +72,6 @@ class HtmlRollingFileLogAppenderTest {
             logging {
                 html("html") {
                     fileCreator = { file }
-
                 }
             }.use {
                 val logger = it.createLogger("test")

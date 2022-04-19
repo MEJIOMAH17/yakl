@@ -163,7 +163,7 @@ public class HtmlRollingFileLogAppender(
                 """
                 </table>
                 </body>
-            """.trimIndent()
+                """.trimIndent()
             )
         }
     }

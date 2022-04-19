@@ -39,7 +39,7 @@ class MainLoggerTest {
         var wasClosed = false
 
         override fun append(logMessage: LogMessage) {
-            //do nothing
+            // do nothing
         }
 
         override fun close() {
