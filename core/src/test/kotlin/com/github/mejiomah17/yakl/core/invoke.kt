@@ -6,12 +6,13 @@ import java.time.Instant
 operator fun LogMessage.Companion.invoke(
     level: LogLevel = LogLevel.INFO,
     loggerName: String = "",
-    contentSupplier: () -> Any = {}
+    contentSupplier: () -> Any = {},
+    throwable: Throwable? = null
 ): LogMessage {
     return LogMessage(
         time = Instant.now(),
         level = level,
-        throwable = null,
+        throwable = throwable,
         contentSupplier = contentSupplier,
         loggerName = loggerName,
         messageContext = emptyMap()

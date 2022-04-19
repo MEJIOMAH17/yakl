@@ -17,7 +17,11 @@ public fun interface LogFormatter {
             } else {
                 ""
             }
-            builder.append("$time [${message.level}] ${context}${message.loggerName}:${message.content}")
+            builder.append("$time [${message.level}] ")
+            builder.append("${context}${message.loggerName}:${message.content}")
+            if (message.throwable != null) {
+                builder.append("${message.throwable} ${message.throwable.stackTraceToString()}")
+            }
         }
     }
 }

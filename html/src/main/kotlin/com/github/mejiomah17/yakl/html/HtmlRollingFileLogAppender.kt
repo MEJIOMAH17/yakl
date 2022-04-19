@@ -44,7 +44,11 @@ public class HtmlRollingFileLogAppender(
             td("Level", logMessage.level)
             td("Logger", logMessage.loggerName)
             td(content = logMessage.messageContext)
-            td(content = logMessage.content)
+            if (logMessage.throwable != null) {
+                td(content = "${logMessage.content} ${logMessage.throwable?.localizedMessage} ${logMessage.throwable?.stackTraceToString()}")
+            } else {
+                td(content = logMessage.content)
+            }
             appendLine("</tr>")
         }
         synchronized(lock) {
@@ -55,6 +59,7 @@ public class HtmlRollingFileLogAppender(
                 writer.close()
                 file = fileCreator()
                 writer = file.outputStream().writer()
+                writeFileStart()
             }
         }
     }
@@ -62,8 +67,7 @@ public class HtmlRollingFileLogAppender(
     private fun writeFileStart() {
         synchronized(lock) {
             writer.append(
-                """
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+                """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
     <style type="text/css">

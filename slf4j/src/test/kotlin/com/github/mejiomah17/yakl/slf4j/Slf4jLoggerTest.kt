@@ -9,6 +9,7 @@ import com.github.mejiomah17.yakl.core.SimpleLoggerFather
 import com.github.mejiomah17.yakl.core.sync.SyncMainLogger
 import com.github.mejiomah17.yakl.dsl.logging
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -33,7 +34,7 @@ class Slf4jLoggerTest {
     val mainLogger = SyncMainLogger(emptyList())
 
     @Test
-    fun `should return name from yakl`() {
+    fun `returns name from yakl`() {
         Slf4jLogger(
             object : Logger {
                 override val name: String = "test"
@@ -50,6 +51,29 @@ class Slf4jLoggerTest {
             },
             mainLogger
         ).name shouldBe "test"
+    }
+
+    @Test
+    fun `extract exception to yakl`() {
+        var th: Throwable? = null
+        val exception = IllegalStateException()
+        Slf4jLogger(
+            object : Logger {
+                override val name: String = "test"
+
+                override fun log(
+                    level: LogLevel,
+                    throwable: Throwable?,
+                    time: Instant,
+                    messageContext: Map<String, out Any>,
+                    contentSupplier: () -> Any
+                ) {
+                    th = throwable
+                }
+            },
+            mainLogger
+        ).error("", "", exception)
+        th.shouldBeSameInstanceAs(exception)
     }
 
     @TestFactory

@@ -26,8 +26,8 @@ class StdOutLogAppenderTest {
         try {
             val messages = arrayListOf<String>()
             val newStream = object : PrintStream(out) {
-                override fun writeBytes(buf: ByteArray) {
-                    messages.add(String(buf))
+                override fun print(s: String) {
+                    messages.add(s)
                 }
             }
             System.setOut(newStream)

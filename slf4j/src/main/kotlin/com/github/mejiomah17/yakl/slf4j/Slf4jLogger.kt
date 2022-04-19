@@ -588,7 +588,7 @@ internal class Slf4jLogger(
     ) {
         log.log(
             level = level,
-            throwable = throwable,
+            throwable = throwable ?: args.firstOrNull { it is Throwable } as Throwable?,
             time = Instant.now(),
             messageContext = createContextMap(marker),
         ) {

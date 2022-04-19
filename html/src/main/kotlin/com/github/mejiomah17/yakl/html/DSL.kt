@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger
 private val counters = IdentityHashMap<LogDslScope, AtomicInteger>()
 
 public fun LogDslScope.html(
-    name: String = "sdtout-${counters.computeIfAbsent(this) { AtomicInteger() }.incrementAndGet()}",
+    name: String = "html-${counters.computeIfAbsent(this) { AtomicInteger() }.incrementAndGet()}",
     block: HtmlRollingFileAppenderDslScope.() -> Unit = {}
 ) {
     val scope = HtmlRollingFileAppenderDslScope(name)
@@ -38,7 +38,7 @@ public class HtmlRollingFileAppenderDslScope(
     }
 
     public var filter: LogFilter = LogFilter.allowAll
-    public var rollFileWhen: (File) -> Boolean = { it.length() > 10_000 }
+    public var rollFileWhen: (File) -> Boolean = { it.length() > 0xA00000 }
     public var fileCreator: () -> File = {
         File("log-${defaultDateFormat.format(Instant.now())}.html")
     }
