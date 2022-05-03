@@ -1,6 +1,8 @@
 package com.github.mejiomah17.yakl.core
 
 import com.github.mejiomah17.yakl.api.LogLevel
+import com.github.mejiomah17.yakl.api.LoggerFather
+import com.github.mejiomah17.yakl.api.createLogger
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
@@ -42,5 +44,15 @@ class SimpleLoggerFatherTest {
         verify(exactly = 1) {
             mainLogger.close()
         }
+    }
+
+    @Test
+    fun createLoggerFromFunction() {
+        val mainLogger = mockk<MainLogger>(relaxed = true)
+        Xxx(SimpleLoggerFather(mainLogger)).log.name shouldBe "com.github.mejiomah17.yakl.core.SimpleLoggerFatherTest"
+    }
+
+    class Xxx(val loggerFather: LoggerFather) {
+        val log = loggerFather.createLogger { }
     }
 }
