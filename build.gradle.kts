@@ -1,13 +1,11 @@
+import java.net.URI
+
 plugins {
     kotlin("jvm") version "1.6.10"
     java
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("maven-publish")
 }
-
-group = "com.github.mejiomah17.yakl"
-version = "0.1.7"
-
 allprojects {
     repositories {
         mavenCentral()
@@ -19,29 +17,71 @@ allprojects {
     if (this != rootProject) {
         apply<MavenPublishPlugin>()
         apply<JavaPlugin>()
+        apply<SigningPlugin>()
         java {
+            withJavadocJar()
             withSourcesJar()
         }
         afterEvaluate {
-            publishing {
-                repositories {
-                    maven {
-                        url = uri("https://maven.pkg.github.com/MEJIOMAH17/yakl")
-                        credentials {
-                            val githubToken: String by project
-                            val githubUser: String by project
-
-                            username = githubUser
-                            password = githubToken
-                        }
-                    }
+            configure<SigningExtension> {
+                val signingKeyLocation: String by project
+                val secretKey = File(signingKeyLocation).readText()
+                val signingPassword: String by project
+                useInMemoryPgpKeys(secretKey, signingPassword)
+                publishing.publications.configureEach {
+                    sign(this)
                 }
+            }
+            publishing {
+                val nexusUsername: String by project
                 publications {
                     create<MavenPublication>("maven") {
                         from(components["java"])
-                        this.groupId = rootProject.group.toString()
-                        this.artifactId = project.name
-                        this.version = rootProject.version.toString()
+                    }
+                    configureEach {
+                        if (this !is MavenPublication) return@configureEach
+                        if (name == "jvm") {
+                            artifact(tasks.getByName("javadocJar")) {
+                                classifier = "javadoc"
+                            }
+                        }
+                        version = project.version.toString()
+                        pom {
+                            name = "An YAKL ${project.name} module"
+                            description = name.get()
+                            url = "https://github.com/MEJIOMAH17/yakl"
+                            licenses {
+                                license {
+                                    name = "MIT"
+                                    url = "https://opensource.org/license/mit/"
+                                }
+                            }
+                            developers {
+                                developer {
+                                    id = nexusUsername
+                                    name = "Mark Epshtein"
+                                    email = "epshteinme@gmail.com"
+                                }
+                            }
+                            scm {
+                                url = "scm:git:git://github.com/MEJIOMAH17/yakl.git"
+                                connection = "scm:git:ssh://git@github.com/MEJIOMAH17/yakl.git"
+                                developerConnection = "https://github.com/MEJIOMAH17/yakl"
+                            }
+                        }
+                    }
+                    repositories {
+                        maven {
+                            val releasesRepoUrl =
+                                URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                            name = "mavenCentral"
+                            url = releasesRepoUrl
+                            val nexusToken: String by project
+                            credentials {
+                                username = nexusUsername
+                                password = nexusToken
+                            }
+                        }
                     }
                 }
             }
