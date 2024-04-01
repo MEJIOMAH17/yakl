@@ -22,64 +22,68 @@ allprojects {
             withJavadocJar()
             withSourcesJar()
         }
+
         afterEvaluate {
-            configure<SigningExtension> {
-                val signingKeyLocation: String by project
-                val secretKey = File(signingKeyLocation).readText()
-                val signingPassword: String by project
-                useInMemoryPgpKeys(secretKey, signingPassword)
-                publishing.publications.configureEach {
-                    sign(this)
+            val mavenCentralPublishing:String by project
+            if(mavenCentralPublishing.toBoolean()){
+                configure<SigningExtension> {
+                    val signingKeyLocation: String by project
+                    val secretKey = File(signingKeyLocation).readText()
+                    val signingPassword: String by project
+                    useInMemoryPgpKeys(secretKey, signingPassword)
+                    publishing.publications.configureEach {
+                        sign(this)
+                    }
                 }
-            }
-            publishing {
-                val nexusUsername: String by project
-                publications {
-                    create<MavenPublication>("maven") {
-                        from(components["java"])
-                    }
-                    configureEach {
-                        if (this !is MavenPublication) return@configureEach
-                        if (name == "jvm") {
-                            artifact(tasks.getByName("javadocJar")) {
-                                classifier = "javadoc"
-                            }
+                publishing {
+                    val nexusUsername: String by project
+                    publications {
+                        create<MavenPublication>("maven") {
+                            from(components["java"])
                         }
-                        version = project.version.toString()
-                        pom {
-                            name = "An YAKL ${project.name} module"
-                            description = name.get()
-                            url = "https://github.com/MEJIOMAH17/yakl"
-                            licenses {
-                                license {
-                                    name = "MIT"
-                                    url = "https://opensource.org/license/mit/"
+                        configureEach {
+                            if (this !is MavenPublication) return@configureEach
+                            if (name == "jvm") {
+                                artifact(tasks.getByName("javadocJar")) {
+                                    classifier = "javadoc"
                                 }
                             }
-                            developers {
-                                developer {
-                                    id = nexusUsername
-                                    name = "Mark Epshtein"
-                                    email = "epshteinme@gmail.com"
+                            version = project.version.toString()
+                            pom {
+                                name = "An YAKL ${project.name} module"
+                                description = name.get()
+                                url = "https://github.com/MEJIOMAH17/yakl"
+                                licenses {
+                                    license {
+                                        name = "MIT"
+                                        url = "https://opensource.org/license/mit/"
+                                    }
+                                }
+                                developers {
+                                    developer {
+                                        id = nexusUsername
+                                        name = "Mark Epshtein"
+                                        email = "epshteinme@gmail.com"
+                                    }
+                                }
+                                scm {
+                                    url = "scm:git:git://github.com/MEJIOMAH17/yakl.git"
+                                    connection = "scm:git:ssh://git@github.com/MEJIOMAH17/yakl.git"
+                                    developerConnection = "https://github.com/MEJIOMAH17/yakl"
                                 }
                             }
-                            scm {
-                                url = "scm:git:git://github.com/MEJIOMAH17/yakl.git"
-                                connection = "scm:git:ssh://git@github.com/MEJIOMAH17/yakl.git"
-                                developerConnection = "https://github.com/MEJIOMAH17/yakl"
-                            }
                         }
-                    }
-                    repositories {
-                        maven {
-                            val releasesRepoUrl =
-                                URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-                            name = "mavenCentral"
-                            url = releasesRepoUrl
-                            val nexusToken: String by project
-                            credentials {
-                                username = nexusUsername
-                                password = nexusToken
+                        repositories {
+                            maven {
+                                val releasesRepoUrl =
+                                    URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                                name = "mavenCentral"
+                                url = releasesRepoUrl
+                                val nexusToken: String by project
+                                credentials {
+                                    username = nexusUsername
+                                    password = nexusToken
+                                }
                             }
                         }
                     }
