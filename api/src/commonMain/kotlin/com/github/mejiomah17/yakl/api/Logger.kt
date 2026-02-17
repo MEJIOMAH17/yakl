@@ -9,14 +9,14 @@ public interface Logger {
         level: LogLevel,
         throwable: Throwable?,
         time: Instant,
-        messageContext: Map<String, out Any>,
+        messageContext: Map<String, Any>,
         contentSupplier: () -> Any,
     )
 
     public fun trace(
         throwable: Throwable? = null,
         time: Instant = Instant.now(),
-        messageContext: Map<String, out Any> = emptyMap(),
+        messageContext: Map<String, Any> = emptyMap(),
         contentSupplier: () -> Any,
     ) {
         log(
@@ -31,7 +31,7 @@ public interface Logger {
     public fun debug(
         throwable: Throwable? = null,
         time: Instant = Instant.now(),
-        messageContext: Map<String, out Any> = emptyMap(),
+        messageContext: Map<String, Any> = emptyMap(),
         contentSupplier: () -> Any,
     ) {
         log(
@@ -46,7 +46,7 @@ public interface Logger {
     public fun info(
         throwable: Throwable? = null,
         time: Instant = Instant.now(),
-        messageContext: Map<String, out Any> = emptyMap(),
+        messageContext: Map<String, Any> = emptyMap(),
         contentSupplier: () -> Any,
     ) {
         log(
@@ -61,7 +61,7 @@ public interface Logger {
     public fun warn(
         throwable: Throwable? = null,
         time: Instant = Instant.now(),
-        messageContext: Map<String, out Any> = emptyMap(),
+        messageContext: Map<String, Any> = emptyMap(),
         contentSupplier: () -> Any,
     ) {
         log(
@@ -76,7 +76,7 @@ public interface Logger {
     public fun error(
         throwable: Throwable? = null,
         time: Instant = Instant.now(),
-        messageContext: Map<String, out Any> = emptyMap(),
+        messageContext: Map<String, Any> = emptyMap(),
         contentSupplier: () -> Any,
     ) {
         log(
@@ -91,7 +91,7 @@ public interface Logger {
     public fun fatal(
         throwable: Throwable? = null,
         time: Instant = Instant.now(),
-        messageContext: Map<String, out Any> = emptyMap(),
+        messageContext: Map<String, Any> = emptyMap(),
         contentSupplier: () -> Any,
     ) {
         log(
