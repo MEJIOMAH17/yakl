@@ -1,12 +1,7 @@
 kotlin {
-    explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Strict
+    jvm()
 }
 dependencies {
-    api(project(":core"))
-    testImplementation("io.kotest:kotest-assertions-core:5.0.3")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
+    commonMainApi(project(":core"))
+    commonTestImplementation(libs.awaitility)
 }
