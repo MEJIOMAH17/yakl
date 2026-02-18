@@ -1,9 +1,8 @@
 kotlin {
-    explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Strict
+    jvm()
 }
 dependencies {
-    api(project(":core"))
-    implementation("org.slf4j:slf4j-api:1.7.32")
-
-    testImplementation("io.mockk:mockk:1.12.2")
+    commonMainApi(project(":core"))
+    commonMainImplementation(libs.slf4j)
+    commonTestImplementation(libs.mockk)
 }

@@ -1,8 +1,8 @@
 kotlin {
-    explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Strict
+    jvm()
 }
 dependencies {
-    api(project(":api"))
-    testImplementation("org.awaitility:awaitility-kotlin:4.1.1")
-    testImplementation("io.mockk:mockk:1.12.2")
+    commonMainApi(project(":api"))
+    commonTestImplementation(libs.awaitility)
+    commonTestImplementation(libs.mockk)
 }
